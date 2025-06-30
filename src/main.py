@@ -1,10 +1,10 @@
-from textnode import TextNode
+from textnode import TextNode, TextType
 
 
-def ___main___():
-    text = TextNode("Some anchor text", "link", "https://www.boot.dev")
+def __main__():
+    text = TextNode("Some anchor text", TextType.LINK, "https://www.boot.dev")
     result = text.__repr__()
     print(result)
 
 
-___main___()
+__main__()

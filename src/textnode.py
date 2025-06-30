@@ -1,13 +1,13 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class TextType(Enum):
-    PLAIN_TEXT = "text"
-    BOLD_TEXT = "bold"
-    ITALIC_TEXT = "italic"
-    CODE_TEXT = "code"
-    LINK = "link"
-    IMAGE = "image"
+    PLAIN = auto()
+    BOLD = auto()
+    ITALIC = auto()
+    CODE = auto()
+    LINK = auto()
+    IMAGE = auto()
 
 
 class TextNode:
@@ -17,7 +17,10 @@ class TextNode:
         self.url = url
 
     def __eq__(node1, node2):
-        return node1 == node2
+        text_equal = node1.text == node2.text
+        type_equal = node1.text_type == node2.text_type
+        url_equal = node1.url == node2.url
+        return text_equal and type_equal and url_equal
 
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
