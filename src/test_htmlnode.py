@@ -37,7 +37,16 @@ class TestHTMLNode(unittest.TestCase):
         leaf = LeafNode(None, None)
         self.assertRaises(ValueError, leaf.to_html)
 
-    def test_leaf_to_html_p(self):
+    def test_eq(self):
+        node1 = HTMLNode("p", "Hello, world!")
+        node2 = HTMLNode("p", "Hello, world!")
+        self.assertEqual(node1, node2)
+
+        leaf1 = LeafNode("a", "Leaf time")
+        leaf2 = LeafNode("a", "Leaf time")
+        self.assertEqual(leaf1, leaf2)
+
+    def test_leaf_to_html(self):
         node = LeafNode("p", "Hello, world!")
         self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
         tagless_node = LeafNode(None, "Wobbles")

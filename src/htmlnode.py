@@ -14,7 +14,6 @@ class HTMLNode:
     def props_to_html(self):
         if self.props is None:
             return ""
-        string_to_return = ""
         prop_strings = [
             f' {prop}="{html.escape(self.props[prop])}"' for prop in self.props
         ]
@@ -22,6 +21,13 @@ class HTMLNode:
 
     def __repr__(self):
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
+
+    def __eq__(node1, node2):
+        tag = node1.tag == node2.tag
+        value = node1.value == node2.value
+        children = node1.children == node2.children
+        props = node1.props == node2.props
+        return tag and value and children and props
 
 
 class LeafNode(HTMLNode):
