@@ -47,6 +47,13 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(
             node2.to_html(), '<a href="www.google.com" target="_blank">Google</a>'
         )
+        borked_node = LeafNode(
+            "a", "<b>Bork</b>", {"target": """Hello "fellow" borkers!"""}
+        )
+        self.assertEqual(
+            borked_node.to_html(),
+            '<a target="Hello &quot;fellow&quot; borkers!">&lt;b&gt;Bork&lt;/b&gt;</a>',
+        )
 
 
 if __name__ == "__main__":

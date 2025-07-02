@@ -1,3 +1,6 @@
+import html
+
+
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
@@ -13,7 +16,7 @@ class HTMLNode:
             return ""
         string_to_return = ""
         for prop in self.props:
-            string_to_return += f' {prop}="{self.props[prop].replace('"', "&quot;")}"'
+            string_to_return += f' {prop}="{html.escape(self.props[prop])}"'
         return string_to_return
 
     def __repr__(self):
@@ -29,4 +32,6 @@ class LeafNode(HTMLNode):
             raise ValueError("This node lacks a value")
         if self.tag is None:
             return self.value
-        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+        return (
+            f"<{self.tag}{self.props_to_html()}>{html.escape(self.value)}</{self.tag}>"
+        )
