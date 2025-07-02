@@ -15,9 +15,10 @@ class HTMLNode:
         if self.props is None:
             return ""
         string_to_return = ""
-        for prop in self.props:
-            string_to_return += f' {prop}="{html.escape(self.props[prop])}"'
-        return string_to_return
+        prop_strings = [
+            f' {prop}="{html.escape(self.props[prop])}"' for prop in self.props
+        ]
+        return "".join(prop_strings)
 
     def __repr__(self):
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
