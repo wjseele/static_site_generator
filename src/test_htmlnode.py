@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -34,6 +34,19 @@ class TestHTMLNode(unittest.TestCase):
     def test_raise_trouble(self):
         node = HTMLNode()
         self.assertRaises(NotImplementedError, node.to_html)
+        leaf = LeafNode(None, None)
+        self.assertRaises(ValueError, leaf.to_html)
+
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+        tagless_node = LeafNode(None, "Wobbles")
+        self.assertEqual(tagless_node.to_html(), "Wobbles")
+        big_dict = {"href": "www.google.com", "target": "_blank"}
+        node2 = LeafNode("a", "Google", big_dict)
+        self.assertEqual(
+            node2.to_html(), '<a href="www.google.com" target="_blank">Google</a>'
+        )
 
 
 if __name__ == "__main__":
