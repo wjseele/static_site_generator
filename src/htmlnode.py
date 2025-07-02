@@ -10,10 +10,10 @@ class HTMLNode:
 
     def props_to_html(self):
         if self.props is None:
-            raise Exception("No props to convert")
+            return ""
         string_to_return = ""
         for prop in self.props:
-            string_to_return += f" {prop.strip('"')}:{self.props[prop]}"
+            string_to_return += f' {prop}="{self.props[prop]}"'
         return string_to_return
 
     def __repr__(self):
