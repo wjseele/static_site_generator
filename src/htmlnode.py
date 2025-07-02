@@ -13,7 +13,7 @@ class HTMLNode:
             return ""
         string_to_return = ""
         for prop in self.props:
-            string_to_return += f' {prop}="{self.props[prop]}"'
+            string_to_return += f' {prop}="{self.props[prop].replace('"', "&quot;")}"'
         return string_to_return
 
     def __repr__(self):
