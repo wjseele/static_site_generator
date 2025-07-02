@@ -16,10 +16,12 @@ class TextNode:
         self.text_type = TextType(text_type)
         self.url = url
 
-    def __eq__(node1, node2):
-        text_equal = node1.text == node2.text
-        type_equal = node1.text_type == node2.text_type
-        url_equal = node1.url == node2.url
+    def __eq__(self, other):
+        if self.__class__ is not other.__class__:
+            return NotImplemented
+        text_equal = self.text == other.text
+        type_equal = self.text_type == other.text_type
+        url_equal = self.url == other.url
         return text_equal and type_equal and url_equal
 
     def __repr__(self):

@@ -46,6 +46,10 @@ class TestHTMLNode(unittest.TestCase):
         leaf2 = LeafNode("a", "Leaf time")
         self.assertEqual(leaf1, leaf2)
 
+        oops = node1 == leaf1
+        self.assertIs(oops, False)
+        self.assertIs(node1.__eq__("Mittens"), NotImplemented)
+
     def test_leaf_to_html(self):
         node = LeafNode("p", "Hello, world!")
         self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
