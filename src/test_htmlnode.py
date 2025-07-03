@@ -82,6 +82,18 @@ class TestHTMLNode(unittest.TestCase):
             "<div><span><b>grandchild</b></span></div>",
         )
 
+    def test_to_html_with_big_family(self):
+        child1 = LeafNode("a", "child1", {"href": "www.boot.dev"})
+        child2 = LeafNode("li", "child2")
+        child3 = LeafNode("li", "child3")
+        parent2 = ParentNode("ul", [child2, child2, child2])
+        parent3 = ParentNode("ul", [child3, child3])
+        parent1 = ParentNode("p", [child1, parent2, parent3])
+        self.assertEqual(
+            parent1.to_html(),
+            '<p><a href="www.boot.dev">child1</a><ul><li>child2</li><li>child2</li><li>child2</li></ul><ul><li>child3</li><li>child3</li></ul></p>',
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
