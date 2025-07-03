@@ -72,6 +72,10 @@ class TestHTMLNode(unittest.TestCase):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode("div", [child_node])
         self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
+        parent_with_prop = ParentNode("a", [child_node], {"href": "google"})
+        self.assertEqual(
+            parent_with_prop.to_html(), '<a href="google"><span>child</span></a>'
+        )
 
     def test_to_html_with_grandchildren(self):
         grandchild_node = LeafNode("b", "grandchild")
@@ -93,6 +97,12 @@ class TestHTMLNode(unittest.TestCase):
             parent1.to_html(),
             '<p><a href="www.boot.dev">child1</a><ul><li>child2</li><li>child2</li><li>child2</li></ul><ul><li>child3</li><li>child3</li></ul></p>',
         )
+
+    def test_parental_trouble(self):
+        tagless_parent = ParentNode(None, [])
+        childless_parent = ParentNode("a", [])
+        self.assertRaises(ValueError, tagless_parent.to_html)
+        self.assertRaises(ValueError, childless_parent.to_html)
 
 
 if __name__ == "__main__":
