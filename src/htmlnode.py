@@ -44,3 +44,21 @@ class LeafNode(HTMLNode):
         return (
             f"<{self.tag}{self.props_to_html()}>{html.escape(self.value)}</{self.tag}>"
         )
+
+
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props=None):
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+        if self.tag is None:
+            raise ValueError("This node lacks a tag")
+        if self.children is None:
+            raise ValueError("This parent has no children")
+        return_string = f"<{self.tag}>"
+
+        for child in self.children:
+            return_string += child.to_html()
+
+        return_string += f"</{self.tag}>"
+        return return_string
