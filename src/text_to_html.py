@@ -13,8 +13,12 @@ def text_node_to_html_node(text_node):
         case TextType.CODE:
             return LeafNode("code", text_node.text, None)
         case TextType.LINK:
+            if text_node.url is None or len(text_node.url) == 0:
+                raise Exception("URL is missing")
             return LeafNode("a", text_node.text, {"href": text_node.url})
         case TextType.IMAGE:
+            if text_node.url is None or len(text_node.url) == 0:
+                raise Exception("Image source is missing")
             return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         case _:
             raise Exception("Couldn't match the type")
