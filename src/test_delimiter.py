@@ -32,6 +32,17 @@ class TestDelimiter(unittest.TestCase):
         ]
         self.assertEqual(split_nodes_delimiter([node], "`", TextType.CODE), expected)
 
+    def test_double_bold(self):
+        node = TextNode("This is a **text** with a **bold** word.", TextType.TEXT)
+        expected = [
+            TextNode("This is a ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with a ", TextType.TEXT),
+            TextNode("bold", TextType.BOLD),
+            TextNode(" word.", TextType.TEXT),
+        ]
+        self.assertEqual(split_nodes_delimiter([node], "**", TextType.BOLD), expected)
+
     def test_list_of_nodes(self):
         node = TextNode("This is a text with a **bold** word.", TextType.TEXT)
         expected = [
@@ -53,6 +64,29 @@ class TestDelimiter(unittest.TestCase):
             TextNode(" right at the start.", TextType.TEXT),
         ]
         self.assertEqual(split_nodes_delimiter([node], "_", TextType.ITALIC), expected)
+
+    def test_entire_string_delimited(self):
+        node = TextNode("**Full bold text**", TextType.TEXT)
+        expected = [
+            TextNode("", TextType.TEXT),  # The part before the first delimiter
+            TextNode("Full bold text", TextType.BOLD),
+            TextNode("", TextType.TEXT),  # The part after the last delimiter
+        ]
+        self.assertEqual(split_nodes_delimiter([node], "**", TextType.BOLD), expected)
+
+    def test_no_delimiter_present(self):
+        node = TextNode("This is just plain text", TextType.TEXT)
+        expected = [TextNode("This is just plain text", TextType.TEXT)]
+        self.assertEqual(split_nodes_delimiter([node], "**", TextType.BOLD), expected)
+
+    def test_empty_delimited_content(self):
+        node = TextNode("Text with ****empty bold", TextType.TEXT)
+        expected = [
+            TextNode("Text with ", TextType.TEXT),
+            TextNode("", TextType.BOLD),  # Empty content inside the delimiters
+            TextNode("empty bold", TextType.TEXT),
+        ]
+        self.assertEqual(split_nodes_delimiter([node], "**", TextType.BOLD), expected)
 
     def test_missing_delimited(self):
         node = TextNode("This is not **correct bold.", TextType.TEXT)

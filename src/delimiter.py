@@ -15,7 +15,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if len(block) % 2 == 0:
                 raise Exception("Could not find closing delimiter")
             for text in range(len(block)):
-                if text == 1:
+                if text % 2 == 1:
                     block[text] = TextNode(block[text], text_type)
                 else:
                     block[text] = TextNode(block[text], TextType.TEXT)
