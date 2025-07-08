@@ -25,28 +25,59 @@ def split_nodes_image(old_nodes):
         if node.text_type is not TextType.TEXT:
             new_nodes.append(node)
         else:
-            images = extract_markdown_images(node)
+            images = extract_markdown_images(node.text)
             if not images:
                 new_nodes.append(node)
             else:
                 block = []
-                block = node_image_splitter(node, block, images)
-                new_nodes.append(block)
+                block = node_image_splitter(node.text, block, images)
+                new_nodes.extend(block)
 
     return new_nodes
 
 
 def node_image_splitter(node, block, images):
-    sections = node.text.split(f"![{images[0][0]}]({images[0][1]})", 1)
-    block.append(TextNode(sections[0], TextType.TEXT))
+    sections = node.split(f"![{images[0][0]}]({images[0][1]})", 1)
+    if len(sections[0]) > 0:
+        block.append(TextNode(sections[0], TextType.TEXT))
     block.append(TextNode(images[0][0], TextType.IMAGE, images[0][1]))
-    if len(images > 0):
-        block = node_image_splitter(sections[1], block, images[1::])
-    if len(sections[1]) > 0:
-        block.append(TextNode(sections[1], TextType.TEXT))
-        return block
+    if len(images) > 1:
+        block = node_image_splitter(sections[1], block, images[1:])
+    else:
+        if len(sections[1]) > 0:
+            block.append(TextNode(sections[1], TextType.TEXT))
+            return block
     return block
 
 
 def split_nodes_link(old_nodes):
-    pass
+    if not old_nodes:
+        raise ValueError("No nodes received")
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type is not TextType.TEXT:
+            new_nodes.append(node)
+        else:
+            links = extract_markdown_links(node.text)
+            if not links:
+                new_nodes.append(node)
+            else:
+                block = []
+                block = node_link_splitter(node.text, block, links)
+                new_nodes.extend(block)
+
+    return new_nodes
+
+
+def node_link_splitter(node, block, links):
+    sections = node.split(f"[{links[0][0]}]({links[0][1]})", 1)
+    if len(sections[0]) > 0:
+        block.append(TextNode(sections[0], TextType.TEXT))
+    block.append(TextNode(links[0][0], TextType.LINK, links[0][1]))
+    if len(links) > 1:
+        block = node_link_splitter(sections[1], block, links[1:])
+    else:
+        if len(sections[1]) > 0:
+            block.append(TextNode(sections[1], TextType.TEXT))
+            return block
+    return block
