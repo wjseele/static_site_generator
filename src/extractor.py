@@ -1,6 +1,6 @@
 import re
 
-from textnode import TextType
+from textnode import TextNode, TextType
 
 
 def extract_markdown_images(text):
@@ -28,8 +28,24 @@ def split_nodes_image(old_nodes):
             images = extract_markdown_images(node)
             if not images:
                 new_nodes.append(node)
+            else:
+                block = []
+                block = node_image_splitter(node, block, images)
+                new_nodes.append(block)
 
     return new_nodes
+
+
+def node_image_splitter(node, block, images):
+    sections = node.text.split(f"![{images[0][0]}]({images[0][1]})", 1)
+    block.append(TextNode(sections[0], TextType.TEXT))
+    block.append(TextNode(images[0][0], TextType.IMAGE, images[0][1]))
+    if len(images > 0):
+        block = node_image_splitter(sections[1], block, images[1::])
+    if len(sections[1]) > 0:
+        block.append(TextNode(sections[1], TextType.TEXT))
+        return block
+    return block
 
 
 def split_nodes_link(old_nodes):
