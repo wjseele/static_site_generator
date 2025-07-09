@@ -55,6 +55,22 @@ class TestExtractor(unittest.TestCase):
             new_nodes,
         )
 
+    def test_split_link(self):
+        node = TextNode(
+            "This is text with a [Boot](https://boot.dev) and another [Google](https://www.google.com)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with a ", TextType.TEXT),
+                TextNode("Boot", TextType.LINK, "https://boot.dev"),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode("Google", TextType.LINK, "https://www.google.com"),
+            ],
+            new_nodes,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
