@@ -22,3 +22,11 @@ class TestTextToTextNodes(unittest.TestCase):
             TextNode("link", TextType.LINK, "https://boot.dev"),
         ]
         self.assertEqual(text_to_textnodes(sample), expected)
+
+    def test_empty(self):
+        sample = ""
+        self.assertRaises(ValueError, text_to_textnodes, sample)
+
+
+if __name__ == "__main__":
+    unittest.main()
