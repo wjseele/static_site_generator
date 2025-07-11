@@ -106,18 +106,16 @@ class TestExtractor(unittest.TestCase):
             nested_run,
         )
 
-        def test_start_with(self):
-            node = TextNode(
-                "[Link first](https://boot.dev) and the rest.", TextType.TEXT
-            )
-            new_nodes = split_nodes_link([node])
-            self.assertListEqual(
-                [
-                    TextNode("Link first", TextType.LINK, "https://boot.dev"),
-                    TextNode(" and the rest.", TextType.TEXT),
-                ],
-                new_nodes,
-            )
+    def test_start_with(self):
+        node = TextNode("[Link first](https://boot.dev) and the rest.", TextType.TEXT)
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [
+                TextNode("Link first", TextType.LINK, "https://boot.dev"),
+                TextNode(" and the rest.", TextType.TEXT),
+            ],
+            new_nodes,
+        )
 
 
 if __name__ == "__main__":
