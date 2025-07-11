@@ -27,6 +27,12 @@ class TestTextToTextNodes(unittest.TestCase):
         sample = ""
         self.assertRaises(ValueError, text_to_textnodes, sample)
 
+    def test_plain(self):
+        sample = "plain text"
+        self.assertEqual(
+            text_to_textnodes(sample), [TextNode("plain text", TextType.TEXT)]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
