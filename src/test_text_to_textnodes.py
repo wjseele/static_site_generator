@@ -33,6 +33,11 @@ class TestTextToTextNodes(unittest.TestCase):
             text_to_textnodes(sample), [TextNode("plain text", TextType.TEXT)]
         )
 
+    def test_single_type(self):
+        sample = "**bolded**"
+        expected = [TextNode("bolded", TextType.BOLD)]
+        self.assertEqual(text_to_textnodes(sample), expected)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -17,4 +17,7 @@ def text_to_textnodes(text):
             delimiter,
             delimiters[delimiter],
         )
+    for node in range(0, len(split_nodes) - 1):
+        if not split_nodes[node].text:
+            del split_nodes[node]
     return split_nodes
