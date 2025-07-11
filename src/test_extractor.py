@@ -84,6 +84,16 @@ class TestExtractor(unittest.TestCase):
             ],
             first_run,
         )
+        second_run = split_nodes_link(first_run)
+        self.assertListEqual(
+            [
+                TextNode("This is a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "https://image.com"),
+            ],
+            second_run,
+        )
 
 
 if __name__ == "__main__":
