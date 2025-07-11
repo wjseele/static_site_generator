@@ -71,6 +71,20 @@ class TestExtractor(unittest.TestCase):
             new_nodes,
         )
 
+    def test_split_combo(self):
+        node = TextNode(
+            "This is a [link](https://boot.dev) and an ![image](https://image.com)",
+            TextType.TEXT,
+        )
+        first_run = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is a [link](https://boot.dev) and an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "https://image.com"),
+            ],
+            first_run,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
