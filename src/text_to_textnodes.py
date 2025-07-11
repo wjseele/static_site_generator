@@ -17,7 +17,9 @@ def text_to_textnodes(text):
             delimiter,
             delimiters[delimiter],
         )
-    for node in range(0, len(split_nodes) - 1):
-        if not split_nodes[node].text:
-            del split_nodes[node]
+    split_nodes = [
+        node
+        for node in split_nodes
+        if (node.text or node.text_type in (TextType.IMAGE, TextType.LINK))
+    ]
     return split_nodes

@@ -26,6 +26,8 @@ class TestTextToTextNodes(unittest.TestCase):
     def test_empty(self):
         sample = ""
         self.assertRaises(ValueError, text_to_textnodes, sample)
+        new_sample = "****"
+        self.assertEqual(text_to_textnodes(new_sample), [])
 
     def test_plain(self):
         sample = "plain text"
