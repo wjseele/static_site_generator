@@ -39,6 +39,30 @@ class TestBlockSplitter(unittest.TestCase):
         md = ""
         self.assertRaises(ValueError, markdown_to_blocks, md)
 
+    def test_multiple_empty_lines(self):
+        """Test blocks separated by more than two newlines"""
+        md = "Block 1\n\n\n\nBlock 2"
+        result = markdown_to_blocks(md)
+        self.assertEqual(result, ["Block 1", "Block 2"])
+
+    def test_trailing_whitespace_blocks(self):
+        """Test blocks with only whitespace"""
+        md = "Real block\n\n   \n\nAnother block"
+        result = markdown_to_blocks(md)
+        self.assertEqual(result, ["Real block", "Another block"])
+
+    def test_mixed_indentation(self):
+        """Test blocks with tabs and spaces"""
+        md = "\tTab indented\n\n    Space indented"
+        result = markdown_to_blocks(md)
+        self.assertEqual(result, ["Tab indented", "Space indented"])
+
+    def test_single_block(self):
+        """Test markdown with no block separators"""
+        md = "Just one block\nwith multiple lines"
+        result = markdown_to_blocks(md)
+        self.assertEqual(result, ["Just one block\nwith multiple lines"])
+
 
 if __name__ == "__main__":
     unittest.main()
