@@ -13,6 +13,8 @@ class BlockType(Enum):
 def block_to_block_type(block):
     if not block:
         raise ValueError("Didn't receive any input")
+    if not isinstance(block, str):
+        raise ValueError("This function only takes a single string")
     headings = ("# ", "## ", "### ", "#### ", "##### ", "###### ")
     if block.startswith(headings):
         return BlockType.HEADING

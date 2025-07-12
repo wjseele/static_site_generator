@@ -8,6 +8,12 @@ class TestTextNode(unittest.TestCase):
         text = "Just some text."
         self.assertEqual(block_to_block_type(text), BlockType.PARAGRAPH)
 
+    def test_empty(self):
+        self.assertRaises(ValueError, block_to_block_type, "")
+
+    def test_wrong(self):
+        self.assertRaises(ValueError, block_to_block_type, ["string1", "string2"])
+
 
 if __name__ == "__main__":
     unittest.main()
