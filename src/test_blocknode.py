@@ -14,6 +14,14 @@ class TestTextNode(unittest.TestCase):
     def test_wrong(self):
         self.assertRaises(ValueError, block_to_block_type, ["string1", "string2"])
 
+    def test_heading(self):
+        text = "# Title"
+        self.assertEqual(block_to_block_type(text), BlockType.HEADING)
+
+    def test_sub_heading(self):
+        text = "### Subheading"
+        self.assertEqual(block_to_block_type(text), BlockType.HEADING)
+
     def test_code(self):
         text = "```delete everything```"
         self.assertEqual(block_to_block_type(text), BlockType.CODE)
