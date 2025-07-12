@@ -23,6 +23,18 @@ class TestBlockSplitter(unittest.TestCase):
             ],
         )
 
+    def test_links(self):
+        md = """
+            This is a [link](https://link.com).
+
+            And this is an ![image](https://image.com)
+        """
+        expected = [
+            "This is a [link](https://link.com).",
+            "And this is an ![image](https://image.com)",
+        ]
+        self.assertEqual(markdown_to_blocks(md), expected)
+
     def test_empty(self):
         md = ""
         self.assertRaises(ValueError, markdown_to_blocks, md)
