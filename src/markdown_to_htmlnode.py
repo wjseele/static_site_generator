@@ -20,9 +20,7 @@ def markdown_to_html_node(markdown):
 
 
 def paragraph_to_textnodes(block):
-    lines = block.split("\n")
-    for line in lines:
-        line = TextNode(line, TextType.TEXT)
+    lines = TextNode(block, TextType.TEXT)
     lines = split_nodes_delimiter(lines, "**", TextType.BOLD)
     lines = split_nodes_delimiter(lines, "_", TextType.ITALIC)
     lines = split_nodes_delimiter(lines, "`", TextType.CODE)
