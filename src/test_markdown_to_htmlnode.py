@@ -71,6 +71,22 @@ class TestHTMLNode(unittest.TestCase):
         html = node.to_html()
         self.assertEqual(html, expected)
 
+    def test_quote(self):
+        md = "> one line quote"
+        expected = "<div><blockquote>one line quote</blockquote></div>"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, expected)
+
+    def test_quotes(self):
+        md = """> first
+        > second
+        > third"""
+        expected = "<div><blockquote>first\nsecond\nthird</blockquote></div>"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

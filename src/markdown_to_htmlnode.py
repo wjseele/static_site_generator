@@ -1,7 +1,7 @@
 from block_splitter import markdown_to_blocks
 from htmlnode import ParentNode, LeafNode
 from textnode import TextNode, TextType
-from blocknode import block_to_block_type, BlockType, unordered_list_checker
+from blocknode import block_to_block_type, BlockType
 from delimiter import split_nodes_delimiter
 from extractor import split_nodes_image, split_nodes_link
 
@@ -14,17 +14,18 @@ def markdown_to_html_node(markdown):
     markdown_blocks = markdown_to_blocks(markdown)
     html_nodes = []
     for block in markdown_blocks:
-        if block_to_block_type(block) == BlockType.PARAGRAPH:
+        block_type = block_to_block_type(block)
+        if block_type == BlockType.PARAGRAPH:
             html_nodes.append(paragraph_to_htmlnodes(block))
-        if block_to_block_type(block) == BlockType.HEADING:
+        elif block_type == BlockType.HEADING:
             html_nodes.append(heading_to_htmlnode(block))
-        if block_to_block_type(block) == BlockType.CODE:
+        elif block_type == BlockType.CODE:
             html_nodes.append(code_to_htmlnode(block))
-        if block_to_block_type(block) == BlockType.QUOTE:
+        elif block_type == BlockType.QUOTE:
             html_nodes.append(quote_to_htmlnode(block))
-        if block_to_block_type(block) == BlockType.UNORDERED_LIST:
+        elif block_type == BlockType.UNORDERED_LIST:
             html_nodes.append(unordered_list_to_htmlnode(block))
-        if block_to_block_type(block) == BlockType.ORDERED_LIST:
+        elif block_type == BlockType.ORDERED_LIST:
             html_nodes.append(ordered_list_to_htmlnode(block))
     return ParentNode("div", html_nodes)
 
@@ -65,12 +66,14 @@ def heading_to_htmlnode(block):
 def code_to_htmlnode(block):
     return ParentNode(
         "pre",
-        [LeafNode("code", block.removeprefix("```").removesuffix("```").lstrip())],
+        [LeafNode("code", block.removeprefix("```").removesuffix("```").lstrip("\n"))],
     )
 
 
 def quote_to_htmlnode(block):
-    return LeafNode("blockquote", block.removeprefix("> "))
+    return LeafNode(
+        "blockquote", "\n".join(line.removeprefix("> ") for line in block.split("\n"))
+    )
 
 
 def unordered_list_to_htmlnode(block):
