@@ -30,18 +30,13 @@ def markdown_to_html_node(markdown):
     return ParentNode("div", html_nodes)
 
 
-def paragraph_to_textnodes(block):
+def content_to_textnodes(block):
     lines = TextNode(" ".join(block.split("\n")), TextType.TEXT)
     lines = split_nodes_delimiter([lines], "**", TextType.BOLD)
     lines = split_nodes_delimiter(lines, "_", TextType.ITALIC)
     lines = split_nodes_delimiter(lines, "`", TextType.CODE)
     lines = split_nodes_image(lines)
     lines = split_nodes_link(lines)
-    return lines
-
-
-def paragraph_to_htmlnodes(block):
-    to_html = paragraph_to_textnodes(block)
     texttypes_dict = {
         TextType.TEXT: None,
         TextType.BOLD: "b",
@@ -51,16 +46,22 @@ def paragraph_to_htmlnodes(block):
         TextType.IMAGE: "img",
     }
     new_leaves = []
-    for element in to_html:
+    for element in lines:
         new_leaves.append(
             LeafNode(texttypes_dict[element.text_type], element.text, element.url)
         )
-    return ParentNode("p", new_leaves, None)
+    return new_leaves
+
+
+def paragraph_to_htmlnodes(block):
+    content = content_to_textnodes(block)
+    return ParentNode("p", content)
 
 
 def heading_to_htmlnode(block):
     heading_level = block.count("#")
-    return LeafNode(f"h{heading_level}", block.lstrip("# "))
+    content = content_to_textnodes(block.lstrip("# "))
+    return ParentNode(f"h{heading_level}", content)
 
 
 def code_to_htmlnode(block):
@@ -71,8 +72,11 @@ def code_to_htmlnode(block):
 
 
 def quote_to_htmlnode(block):
-    return LeafNode(
-        "blockquote", "\n".join(line.removeprefix("> ") for line in block.split("\n"))
+    return ParentNode(
+        "blockquote",
+        content_to_textnodes(
+            "\n".join(line.removeprefix("> ") for line in block.split("\n"))
+        ),
     )
 
 
@@ -91,6 +95,11 @@ def list_splitter(block):
     return_list = []
     for item in split_list:
         return_list.append(
-            LeafNode("li", item.removeprefix("-").lstrip("0123456789.").lstrip())
+            ParentNode(
+                "li",
+                content_to_textnodes(
+                    item.removeprefix("-").lstrip("0123456789.").lstrip()
+                ),
+            )
         )
     return return_list

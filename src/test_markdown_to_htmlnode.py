@@ -72,7 +72,7 @@ class TestHTMLNode(unittest.TestCase):
         md = """> first
         > second
         > third"""
-        expected = "<div><blockquote>first\nsecond\nthird</blockquote></div>"
+        expected = "<div><blockquote>first second third</blockquote></div>"
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html, expected)
