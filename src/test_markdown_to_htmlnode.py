@@ -51,6 +51,26 @@ class TestHTMLNode(unittest.TestCase):
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
 
+    def test_unordered_list(self):
+        md = """- item1
+        - item2
+        - item3
+        """
+        expected = "<div><ul><li>item1</li><li>item2</li><li>item3</li></ul></div>"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, expected)
+
+    def test_ordered_list(self):
+        md = """1. item1
+        2. item2
+        3. item3
+        """
+        expected = "<div><ol><li>item1</li><li>item2</li><li>item3</li></ol></div>"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

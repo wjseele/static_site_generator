@@ -88,6 +88,6 @@ def list_splitter(block):
     return_list = []
     for item in split_list:
         return_list.append(
-            LeafNode("li", item.removeprefix("-").lstrip("0123456789").lstrip())
+            LeafNode("li", item.removeprefix("-").lstrip("0123456789.").lstrip())
         )
     return return_list
