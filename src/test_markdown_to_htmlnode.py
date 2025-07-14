@@ -5,8 +5,7 @@ from htmlnode import HTMLNode, ParentNode, LeafNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_paragraphs(self):
-        md = """
-    This is **bolded** paragraph
+        md = """This is **bolded** paragraph
     text in a p
     tag here
 
@@ -22,23 +21,14 @@ class TestHTMLNode(unittest.TestCase):
         )
 
     def test_text_with_title(self):
-        md = """
-            # Title
-
-            
-            ## Subtitle
-
-
-            text
-        """
+        md = "# Title\n\n## Subtitle\n\ntext"
         expected = "<div><h1>Title</h1><h2>Subtitle</h2><p>text</p></div>"
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html, expected)
 
     def test_codeblock(self):
-        md = """
-    ```
+        md = """```
     This is text that _should_ remain
     the **same** even with inline stuff
     ```
