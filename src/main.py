@@ -2,7 +2,7 @@ import os
 import shutil
 
 
-def __main__():
+def main():
     source = os.path.join(os.getcwd(), "static")
     if not check_path(source):
         raise Exception(f"Couldn't find a source path at {source}")
@@ -51,4 +51,5 @@ def copy_source_files_to_destination(source, destination):
     return copy_log
 
 
-__main__()
+if __name__ == "__main__":
+    main()
