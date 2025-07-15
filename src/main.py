@@ -9,6 +9,7 @@ def main():
         raise Exception(f"Couldn't find a source path at {source}")
     destination = os.path.join(os.getcwd(), "public")
     copy_log = copy_source_files_to_destination(source, destination)
+    generate_page("content/index.md", "template.html", "public/index.html")
     for entry in copy_log:
         print(entry)
 
