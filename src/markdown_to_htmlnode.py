@@ -67,7 +67,7 @@ def quote_to_htmlnode(block):
     return ParentNode(
         "blockquote",
         content_to_textnodes(
-            "\n".join(line.removeprefix("> ") for line in block.split("\n"))
+            "\n".join(line.removeprefix(">").lstrip() for line in block.split("\n"))
         ),
     )
 

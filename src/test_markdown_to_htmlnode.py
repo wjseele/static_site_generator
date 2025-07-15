@@ -67,8 +67,8 @@ class TestHTMLNode(unittest.TestCase):
     def test_quotes(self):
         md = """> first
         > second
-        > third"""
-        expected = "<div><blockquote>first\nsecond\nthird</blockquote></div>"
+        > -- third"""
+        expected = "<div><blockquote>first\nsecond\n-- third</blockquote></div>"
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html, expected)
