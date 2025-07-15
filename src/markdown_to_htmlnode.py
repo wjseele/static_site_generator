@@ -31,7 +31,7 @@ def markdown_to_html_node(markdown):
 
 
 def content_to_textnodes(block):
-    lines = TextNode(" ".join(block.split("\n")), TextType.TEXT)
+    lines = TextNode(block, TextType.TEXT)
     lines = split_nodes_delimiter([lines], "**", TextType.BOLD)
     lines = split_nodes_delimiter(lines, "_", TextType.ITALIC)
     lines = split_nodes_delimiter(lines, "`", TextType.CODE)

@@ -5,13 +5,9 @@ from htmlnode import HTMLNode, ParentNode, LeafNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_paragraphs(self):
-        md = """This is **bolded** paragraph
-    text in a p
-    tag here
+        md = """This is **bolded** paragraph text in a p tag here
 
-    This is another paragraph with _italic_ text and `code` here
-
-    """
+    This is another paragraph with _italic_ text and `code` here"""
 
         node = markdown_to_html_node(md)
         html = node.to_html()
@@ -72,7 +68,7 @@ class TestHTMLNode(unittest.TestCase):
         md = """> first
         > second
         > third"""
-        expected = "<div><blockquote>first second third</blockquote></div>"
+        expected = "<div><blockquote>first\nsecond\nthird</blockquote></div>"
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html, expected)
