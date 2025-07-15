@@ -4,6 +4,7 @@ from textnode import TextNode, TextType
 from blocknode import block_to_block_type, BlockType
 from delimiter import split_nodes_delimiter
 from extractor import split_nodes_image, split_nodes_link
+from text_to_html import text_node_to_html_node
 
 
 def markdown_to_html_node(markdown):
@@ -37,19 +38,10 @@ def content_to_textnodes(block):
     lines = split_nodes_delimiter(lines, "`", TextType.CODE)
     lines = split_nodes_image(lines)
     lines = split_nodes_link(lines)
-    texttypes_dict = {
-        TextType.TEXT: None,
-        TextType.BOLD: "b",
-        TextType.ITALIC: "i",
-        TextType.CODE: "code",
-        TextType.LINK: "a",
-        TextType.IMAGE: "img",
-    }
+
     new_leaves = []
     for element in lines:
-        new_leaves.append(
-            LeafNode(texttypes_dict[element.text_type], element.text, element.url)
-        )
+        new_leaves.append(text_node_to_html_node(element))
     return new_leaves
 
 
