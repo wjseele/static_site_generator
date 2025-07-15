@@ -1,5 +1,6 @@
 import os
 import shutil
+from generator import generate_page
 
 
 def main():
