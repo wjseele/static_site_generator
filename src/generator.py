@@ -23,7 +23,9 @@ def generate_page(from_path, template_path, dest_path):
     source_contents = file_opener(source)
     template_contents = file_opener(template)
     title = extract_title(source_contents)
-    source_html = markdown_to_html_node(source_contents).to_html
+    source_html = markdown_to_html_node(source_contents)
+    print(source_html)
+    source_html = source_html.to_html()
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", source_html)
     file_writer(destination, template_contents)
