@@ -12,9 +12,9 @@ def main():
     source = os.path.join(os.getcwd(), "static")
     if not check_path(source):
         raise Exception(f"Couldn't find a source path at {source}")
-    destination = os.path.join(os.getcwd(), "public")
+    destination = os.path.join(os.getcwd(), "docs")
     copy_log = copy_source_files_to_destination(source, destination)
-    generate_pages_recursive("content", "template.html", "public", basepath)
+    generate_pages_recursive("content", "template.html", "docs", basepath)
     for entry in copy_log:
         print(entry)
 
