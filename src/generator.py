@@ -2,6 +2,7 @@ import os
 import re
 from markdown_to_htmlnode import markdown_to_html_node
 from htmlnode import HTMLNode, ParentNode, LeafNode
+import html
 
 
 def extract_title(markdown):
@@ -26,6 +27,7 @@ def generate_page(from_path, template_path, dest_path):
     source_html = markdown_to_html_node(source_contents).to_html()
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", source_html)
+    template_contents = html.unescape(template_contents)
     file_writer(destination, template_contents)
     return
 
