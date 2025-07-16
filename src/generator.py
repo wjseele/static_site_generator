@@ -14,19 +14,19 @@ def extract_title(markdown):
     return title[0]
 
 
-def generate_page(from_path, template_path, dest_path):
-    if not from_path or not template_path or not dest_path:
-        raise Exception(f"I'm missing one of {from_path, template_path, dest_path}")
-    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
-    source_contents = file_opener(from_path)
-    template_contents = file_opener(template_path)
-    title = extract_title(source_contents)
-    source_html = markdown_to_html_node(source_contents).to_html()
-    template_contents = template_contents.replace("{{ Title }}", title)
-    template_contents = template_contents.replace("{{ Content }}", source_html)
-    template_contents = html.unescape(template_contents)
-    file_writer(dest_path, template_contents)
-    return
+# def generate_page(from_path, template_path, dest_path):
+#     if not from_path or not template_path or not dest_path:
+#         raise Exception(f"I'm missing one of {from_path, template_path, dest_path}")
+#     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+#     source_contents = file_opener(from_path)
+#     template_contents = file_opener(template_path)
+#     title = extract_title(source_contents)
+#     source_html = markdown_to_html_node(source_contents).to_html()
+#     template_contents = template_contents.replace("{{ Title }}", title)
+#     template_contents = template_contents.replace("{{ Content }}", source_html)
+#     template_contents = html.unescape(template_contents)
+#     file_writer(dest_path, template_contents)
+#     return
 
 
 def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
@@ -51,7 +51,7 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             template_contents = template_contents.replace("{{ Title }}", title)
             template_contents = template_contents.replace("{{ Content }}", source_html)
             template_contents = html.unescape(template_contents)
-            file_writer(dest_dir_path, template_contents)
+            file_writer(destination_path, template_contents)
         elif os.path.isdir(source_path):
             generate_pages_recursive(source_path, template_path, destination_path)
     return
