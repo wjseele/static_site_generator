@@ -1,15 +1,20 @@
 import os
 import shutil
+import sys
 from generator import generate_pages_recursive
 
 
 def main():
+    if len(sys.argv) < 2:
+        basepath = "/"
+    else:
+        basepath = sys.argv[1]
     source = os.path.join(os.getcwd(), "static")
     if not check_path(source):
         raise Exception(f"Couldn't find a source path at {source}")
     destination = os.path.join(os.getcwd(), "public")
     copy_log = copy_source_files_to_destination(source, destination)
-    generate_pages_recursive("content", "template.html", "public")
+    generate_pages_recursive("content", "template.html", "public", basepath)
     for entry in copy_log:
         print(entry)
 
