@@ -18,17 +18,56 @@ def generate_page(from_path, template_path, dest_path):
     if not from_path or not template_path or not dest_path:
         raise Exception(f"I'm missing one of {from_path, template_path, dest_path}")
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
-    source = os.path.join(os.getcwd(), from_path)
-    template = os.path.join(os.getcwd(), template_path)
-    destination = os.path.join(os.getcwd(), dest_path)
-    source_contents = file_opener(source)
-    template_contents = file_opener(template)
+    source_contents = file_opener(from_path)
+    template_contents = file_opener(template_path)
     title = extract_title(source_contents)
     source_html = markdown_to_html_node(source_contents).to_html()
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", source_html)
     template_contents = html.unescape(template_contents)
-    file_writer(destination, template_contents)
+    file_writer(dest_path, template_contents)
+    return
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    if not dir_path_content or not template_path or not dest_dir_path:
+        raise Exception(
+            f"I'm missing one of {dir_path_content, template_path, dest_dir_path}"
+        )
+    print(
+        f"Generating page from {dir_path_content} to {dest_dir_path} using {template_path}"
+    )
+    if not check_path(dest_dir_path):
+        create_path(dest_dir_path)
+    contents = get_folder_contents(dir_path_content)
+    for content in contents:
+        source_path = os.path.join(dir_path_content, content)
+        destination_path = os.path.join(dest_dir_path, content)
+        if os.path.isfile(source_path):
+            source_contents = file_opener(source_path)
+            template_contents = file_opener(template_path)
+            title = extract_title(source_contents)
+            source_html = markdown_to_html_node(source_contents).to_html()
+            template_contents = template_contents.replace("{{ Title }}", title)
+            template_contents = template_contents.replace("{{ Content }}", source_html)
+            template_contents = html.unescape(template_contents)
+            file_writer(dest_dir_path, template_contents)
+        elif os.path.isdir(source_path):
+            generate_pages_recursive(source_path, template_path, destination_path)
+    return
+
+
+def get_folder_contents(source):
+    contents = os.listdir(source)
+    return contents
+
+
+def check_path(path_to_check):
+    return os.path.exists(path_to_check)
+
+
+def create_path(destination):
+    os.mkdir(destination)
     return
 
 
